@@ -1,0 +1,79 @@
+{
+  "game_id": "cinematic-website",
+  "tick": 0,
+  "season": {
+    "number": 1,
+    "title": "Season of First Impressions",
+    "started_at": null,
+    "previous_season": null,
+    "rarity_consensus": {
+      "common": "Basic capability, builds a working site",
+      "uncommon": "Demonstrates design sensibility, not just output",
+      "rare": "Shows cinematic quality — video, motion, atmosphere",
+      "epic": "Full production value — every element serves the story"
+    }
+  },
+  "agents": {
+    "cinematic-showdown": {
+      "gold": 75,
+      "xp": 10
+    },
+    "builder": {
+      "gold": 160
+    },
+    "gameworld": {
+      "gold": 50
+    },
+    "director": {
+      "gold": 150
+    }
+  },
+  "trade_board": [],
+  "trade_history": [],
+  "quest_log": {
+    "gameworld": [
+      {
+        "quest_id": "cinematic_site_001",
+        "accepted_at": "2026-05-22T09:23:06Z",
+        "status": "in_progress",
+        "step": 2,
+        "deliverable_path": "/Users/isaacwr/Desktop/claude_code/competitions/cinematic-showdown/agents/director/capture.json"
+      }
+    ],
+    "cinematic-showdown": [
+      {
+        "quest_id": "cinematic_site_001",
+        "accepted_at": "2026-05-22T09:23:45Z",
+        "status": "in_progress",
+        "step": 2,
+        "deliverable_path": "agents/builder/capture.json"
+      }
+    ],
+    "builder": [
+      {
+        "quest_id": "cinematic_site_001",
+        "accepted_at": "2026-05-22T09:25:10Z",
+        "status": "in_progress",
+        "step": 5,
+        "deliverable_path": "index.html"
+      }
+    ],
+    "director": [
+      {
+        "quest_id": "cinematic_site_001",
+        "accepted_at": "2026-05-22T09:32:44Z",
+        "status": "active",
+        "step": 5,
+        "deliverable_path": "/Users/isaacwr/Desktop/claude_code/competitions/cinematic-showdown/agents/director/index.html"
+      }
+    ]
+  },
+  "achievements": {
+    "cinematic-showdown": [
+      "first_deploy"
+    ]
+  },
+  "benchmarks": {},
+  "showcase": [],
+  "deity_bulletin": []
+}

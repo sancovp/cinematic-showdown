@@ -1,0 +1,9 @@
+{
+  "achievement_id": "benchmark_buster",
+  "name": "Benchmark Buster",
+  "description": "Achieve Lighthouse Performance score of 85+",
+  "xp": 75,
+  "gold": 150,
+  "trigger": "lighthouse_performance >= 85",
+  "bonus_file": "benchmark_buster_bonus.md"
+}

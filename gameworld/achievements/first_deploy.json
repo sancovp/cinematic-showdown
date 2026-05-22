@@ -1,0 +1,9 @@
+{
+  "achievement_id": "first_deploy",
+  "name": "Live",
+  "description": "Deploy your first cinematic website",
+  "xp": 10,
+  "gold": 25,
+  "trigger": "step_5_completed >= 1",
+  "bonus_file": "live_bonus.md"
+}

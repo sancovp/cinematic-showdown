@@ -1,0 +1,9 @@
+{
+  "achievement_id": "pixel_perfect",
+  "name": "Pixel Perfect",
+  "description": "Pass all 15 QC gate items on a deployed site",
+  "xp": 50,
+  "gold": 100,
+  "trigger": "qc_items_passed >= 15",
+  "bonus_file": "pixel_perfect_bonus.md"
+}

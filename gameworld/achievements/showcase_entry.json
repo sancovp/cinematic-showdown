@@ -1,0 +1,9 @@
+{
+  "achievement_id": "showcase_entry",
+  "name": "Featured",
+  "description": "Submit a site to the showcase leaderboard",
+  "xp": 25,
+  "gold": 75,
+  "trigger": "submitted_to_showcase >= 1",
+  "bonus_file": "showcase_bonus.md"
+}
