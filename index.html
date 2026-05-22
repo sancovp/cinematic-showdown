@@ -3,225 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cinematic Website Builder — The Game</title>
+  <title>Cinematic Website Builder — The AI Production Guild</title>
+  <meta name="description" content="The game where AI learns to create cinematic websites. Compete. Level Up. Build the most cinematic site.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23000' width='100' height='100' rx='20'/><text y='.9em' font-size='80' x='10'>🎬</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --void: #000000;
-      --accent: #e94560;
-      --accent-light: #ff6b8a;
-      --text-primary: #ffffff;
-      --text-muted: rgba(255,255,255,0.6);
-      --text-dim: rgba(255,255,255,0.35);
-      --glass-bg: rgba(255,255,255,0.01);
-      --glass-border: rgba(255,255,255,0.12);
+      --black: #000;
+      --white: #fff;
+      --white-50: rgba(255,255,255,0.5);
+      --white-70: rgba(255,255,255,0.7);
+      --white-85: rgba(255,255,255,0.85);
+      --accent: #2997ff;
+      --accent-glow: rgba(41,151,255,0.3);
+      --accent-dim: rgba(41,151,255,0.1);
+      --gold: #ffd700;
     }
-
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--void);
-      color: var(--text-primary);
       font-family: 'Inter', sans-serif;
-      font-weight: 300;
+      background: var(--black);
+      color: var(--white-85);
       line-height: 1.6;
       overflow-x: hidden;
     }
-
-    /* ─── GRAIN OVERLAY ─── */
+    /* Grain Overlay */
     .grain {
       position: fixed;
       inset: 0;
       z-index: 9999;
       pointer-events: none;
-      opacity: 0.035;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
-
-    /* ─── TYPOGRAPHY ─── */
-    h1, h2, h3 { font-family: 'Instrument Serif', serif; font-style: italic; }
-
-    .hero-title {
-      font-size: clamp(3.5rem, 9vw, 7rem);
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      text-shadow: 0 2px 40px rgba(0,0,0,0.8);
-    }
-
-    .hero-title .word {
-      display: inline-block;
-      opacity: 0;
-      filter: blur(12px);
-      transform: translateY(30px);
-      will-change: opacity, filter, transform;
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 1.1;
-    }
-
-    .muted-em {
-      opacity: 0.5;
-      font-style: italic;
-    }
-
-    /* ─── VIDEO HERO ─── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* CSS-only cinematic fallback — animated gradient orbs */
-    .hero-bg-fallback {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .hero-bg-fallback::before {
-      content: '';
-      position: absolute;
-      top: -40%;
-      right: -15%;
-      width: 900px;
-      height: 900px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(194,130,60,0.18) 0%, transparent 65%);
-      animation: floatA 9s ease-in-out infinite;
-    }
-    .hero-bg-fallback::after {
-      content: '';
-      position: absolute;
-      bottom: -50%;
-      left: -20%;
-      width: 800px;
-      height: 800px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(233,69,96,0.12) 0%, transparent 65%);
-      animation: floatB 11s ease-in-out infinite reverse;
-    }
-    @keyframes floatA {
-      0%, 100% { transform: translate(0,0) scale(1); }
-      33% { transform: translate(40px,-30px) scale(1.05); }
-      66% { transform: translate(-20px,20px) scale(0.97); }
-    }
-    @keyframes floatB {
-      0%, 100% { transform: translate(0,0) scale(1); }
-      33% { transform: translate(-30px,40px) scale(1.03); }
-      66% { transform: translate(25px,-25px) scale(0.98); }
-    }
-
-    .hero-video-wrap {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-
-    .hero-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.18;
-      filter: blur(1px) brightness(0.6);
-    }
-
-    /* Dark gradient overlays: top 55%, mid 30%, bottom 60% */
-    .hero-gradient {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 35%),
-        linear-gradient(0deg, rgba(0,0,0,0.65) 0%, transparent 40%),
-        linear-gradient(135deg, rgba(12,10,20,0.7) 0%, rgba(0,0,0,0.3) 100%);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      max-width: 900px;
-      padding: 2rem;
-    }
-
-    .hero-eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-    }
-
-    .hero-title-wrap {
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      color: var(--text-muted);
-      font-weight: 300;
-      max-width: 540px;
-      margin: 0 auto 2.5rem;
-      opacity: 0;
-    }
-
-    /* CTA */
-    .cta-group {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      opacity: 0;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.875rem 2.25rem;
-      border-radius: 100px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .btn-accent {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 0 40px rgba(233,69,96,0.35);
-    }
-
-    .btn-accent:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 0 60px rgba(233,69,96,0.55);
-    }
-
-    .btn-glass {
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border);
-      color: var(--text-primary);
-    }
-
-    .btn-glass:hover {
-      transform: translateY(-2px);
-      border-color: rgba(233,69,96,0.5);
-    }
-
-    /* ─── LIQUID GLASS ─── */
+    /* Typography */
+    h1, h2, h3, h4 { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; line-height: 1.1; }
+    /* Liquid Glass */
     .liquid-glass {
       background: rgba(255,255,255,0.01);
       background-blend-mode: luminosity;
@@ -232,665 +52,644 @@
       position: relative;
       overflow: hidden;
     }
-
     .liquid-glass::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
       padding: 1.4px;
-      background: linear-gradient(180deg,
-        rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
-        rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
-        rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events: none;
     }
-
     .liquid-glass-strong {
-      background: rgba(233,69,96,0.08);
+      background: rgba(255,255,255,0.02);
       backdrop-filter: blur(50px);
       -webkit-backdrop-filter: blur(50px);
-      border: 1px solid rgba(233,69,96,0.25);
-      box-shadow: 0 0 50px rgba(233,69,96,0.15);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
     }
-
-    /* ─── NAV ─── */
+    /* Nav */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
       padding: 1rem 2rem;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      background: rgba(0,0,0,0.85);
+      align-items: center;
+      background: rgba(0,0,0,0.7);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: background 0.3s, box-shadow 0.3s;
+      transition: all 0.3s;
     }
-
-    nav.scrolled {
-      background: rgba(0,0,0,0.96);
-      box-shadow: 0 4px 30px rgba(0,0,0,0.4);
-    }
-
-    .nav-brand {
+    .nav-logo {
       font-family: 'Instrument Serif', serif;
       font-style: italic;
-      font-size: 1.1rem;
-      color: var(--text-primary);
+      font-size: 1.25rem;
+      color: var(--white);
       text-decoration: none;
     }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
+    .nav-pill {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
     }
-
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--text-primary); }
-
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--white-70); text-decoration: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--accent); }
     .nav-cta {
-      padding: 0.5rem 1.25rem;
       background: var(--accent);
-      color: #fff !important;
-      border-radius: 100px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      transition: transform 0.2s, box-shadow 0.2s;
+      color: var(--black);
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 30px var(--accent-glow);
     }
-
-    .nav-cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 20px rgba(233,69,96,0.4);
-    }
-
-    /* ─── SECTIONS ─── */
-    section {
-      padding: 8rem 2rem;
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--accent-glow); }
+    /* Hero */
+    .hero {
       position: relative;
-    }
-
-    .container { max-width: 1200px; margin: 0 auto; }
-
-    /* ─── PROBLEM SECTION ─── */
-    .problem {
-      background: var(--void);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+      padding: 6rem 2rem;
+      overflow: hidden;
     }
-
-    .problem-headline {
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      line-height: 1.05;
-      margin-bottom: 2rem;
+    .hero-glow {
+      position: absolute;
+      top: -30%; right: -10%;
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(41,151,255,0.15), transparent 60%);
+      animation: float 8s ease-in-out infinite;
+      pointer-events: none;
     }
-
-    .problem-sub {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto 4rem;
+    .hero-glow-2 {
+      position: absolute;
+      bottom: -40%; left: -15%;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(41,151,255,0.08), transparent 60%);
+      animation: float 10s ease-in-out infinite reverse;
+      pointer-events: none;
+    }
+    .hero-glow-3 {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(41,151,255,0.05), transparent 70%);
+      animation: pulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes float { 0%,100% { transform: translate(0,0); } 50% { transform: translate(30px,-30px); } }
+    @keyframes pulse { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.5; } 50% { transform: translate(-50%,-50%) scale(1.1); opacity: 0.8; } }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.8) 100%);
+      z-index: 1;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out 0.3s forwards;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 30px rgba(0,0,0,0.7);
+      opacity: 0;
+    }
+    .hero h1 .word {
+      display: inline-block;
+      filter: blur(10px);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: filter 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .hero h1 .word.revealed {
+      filter: blur(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero-sub {
+      font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+      color: var(--white-50);
       font-weight: 300;
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out 0.8s forwards;
     }
-
-    /* ─── PIPELINE SECTION ─── */
-    .pipeline {
-      background: linear-gradient(180deg, #050505 0%, #0a0a0f 100%);
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out 1.2s forwards;
     }
-
-    .pipeline-header {
-      text-align: center;
-      margin-bottom: 5rem;
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* Buttons */
+    .btn-primary {
+      background: var(--accent);
+      color: var(--black);
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 40px var(--accent-glow);
     }
-
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 60px var(--accent-glow); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--white);
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+    /* Sections */
+    section { padding: 8rem 2rem; position: relative; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-header { margin-bottom: 4rem; }
+    .section-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .section-sub {
+      color: var(--white-50);
+      font-size: 1.125rem;
+      font-weight: 300;
+      max-width: 600px;
+    }
+    /* Pain Points Section */
+    .pain-points { background: var(--black); }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+    .pain-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.4s;
+    }
+    .pain-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(41,151,255,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(41,151,255,0.1);
+    }
+    .pain-number {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 4rem;
+      color: var(--accent);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .pain-card h3 { font-size: 1.5rem; color: var(--white); margin-bottom: 0.75rem; }
+    .pain-card p { color: var(--white-50); font-size: 0.9375rem; }
+    /* Pipeline Section */
+    .pipeline { background: rgba(10,10,15,1); }
     .pipeline-steps {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 0;
-      position: relative;
+      gap: 0.5rem;
+      margin-top: 4rem;
     }
-
-    .pipeline-steps::before {
-      content: '';
-      position: absolute;
-      top: 2.75rem;
-      left: 8%;
-      right: 8%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--accent), transparent);
-      opacity: 0.25;
-    }
-
+    @media (max-width: 1024px) { .pipeline-steps { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .pipeline-steps { grid-template-columns: repeat(2, 1fr); } }
     .pipeline-step {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 1.5rem;
       text-align: center;
-      padding: 0 0.5rem;
+      transition: all 0.3s;
     }
-
-    .step-circle {
-      width: 5.5rem;
-      height: 5.5rem;
+    .pipeline-step:hover {
+      background: rgba(41,151,255,0.05);
+      border-color: rgba(41,151,255,0.2);
+    }
+    .step-num {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-dim);
       border-radius: 50%;
-      background: var(--glass-bg);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border: 1px solid var(--glass-border);
+      line-height: 32px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .pipeline-step h4 { font-size: 1rem; color: var(--white); margin-bottom: 0.5rem; }
+    .pipeline-step p { font-size: 0.8125rem; color: var(--white-50); }
+    /* Showcase Section */
+    .showcase { background: var(--black); }
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+    .showcase-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s;
+    }
+    .showcase-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .showcase-preview {
+      height: 180px;
+      background: linear-gradient(135deg, rgba(41,151,255,0.1) 0%, rgba(0,0,0,1) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: 1.4rem;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
       position: relative;
-      z-index: 2;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .pipeline-step:hover .step-circle {
-      transform: scale(1.1);
-      box-shadow: 0 0 30px rgba(233,69,96,0.3);
-    }
-
-    .step-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 0.5rem;
-    }
-
-    .step-title {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--text-primary);
-      margin-bottom: 0.4rem;
-    }
-
-    .step-desc {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* ─── SHOWCASE SECTION ─── */
-    .showcase {
-      background: var(--void);
-    }
-
-    .showcase-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
-
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .showcase-card {
-      border-radius: 20px;
       overflow: hidden;
-      position: relative;
-      aspect-ratio: 16/9;
-      background: #111;
     }
-
-    .showcase-card video,
-    .showcase-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .showcase-card-overlay {
+    .showcase-preview::before {
+      content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);
-      display: flex;
-      align-items: flex-end;
-      padding: 1.5rem;
+      background: radial-gradient(circle at 30% 50%, rgba(41,151,255,0.2) 0%, transparent 50%);
     }
-
-    .showcase-card-title {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: #fff;
-    }
-
-    .showcase-card-score {
+    .showcase-badge {
       position: absolute;
       top: 1rem;
       right: 1rem;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.7rem;
-      font-weight: 600;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       padding: 0.25rem 0.75rem;
-      border-radius: 100px;
+      border-radius: 4px;
     }
-
-    /* ─── GAME SECTION ─── */
-    .game {
-      background: linear-gradient(180deg, #0a0a0f 0%, #050505 100%);
+    .showcase-info { padding: 1.5rem; }
+    .showcase-info h4 { font-size: 1.125rem; color: var(--white); margin-bottom: 0.5rem; }
+    .showcase-info p { color: var(--white-50); font-size: 0.875rem; }
+    .showcase-score {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .score-label { font-size: 0.75rem; color: var(--white-50); }
+    .score-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+    .score-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+    .score-value { font-size: 0.75rem; font-weight: 600; color: var(--accent); }
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(41,151,255,0.1) 0%, rgba(0,0,0,1) 100%);
       text-align: center;
     }
-
-    .game-cta-wrap {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 4rem 5rem;
+    .cta-card {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 4rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 24px;
+      position: relative;
+      overflow: hidden;
     }
-
-    .game-price {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: 3.5rem;
-      color: var(--accent);
-      line-height: 1;
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
     }
-
-    .game-price-label {
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-top: 0.25rem;
-    }
-
-    .game-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      max-width: 400px;
-    }
-
-    /* ─── FOOTER ─── */
+    .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); color: var(--white); margin-bottom: 1rem; }
+    .cta-section p { color: var(--white-50); font-size: 1.125rem; margin-bottom: 2.5rem; }
+    .cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    /* Footer */
     footer {
-      background: #000;
-      border-top: 1px solid rgba(255,255,255,0.05);
       padding: 3rem 2rem;
       text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
-
-    .footer-brand {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-size: 1.2rem;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-phone {
-      font-size: 1rem;
-      color: var(--accent);
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-tagline {
-      color: var(--text-dim);
-      font-size: 0.8rem;
-    }
-
-    /* ─── SCROLL REVEAL ─── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
-
+    footer p { color: var(--white-50); font-size: 0.875rem; }
+    /* Reveal Animation */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 1024px) {
-      .pipeline-steps { grid-template-columns: repeat(3, 1fr); gap: 3rem; }
-      .pipeline-steps::before { display: none; }
-      .showcase-grid { grid-template-columns: 1fr; }
-    }
-
+    /* Responsive */
     @media (max-width: 768px) {
-      .pipeline-steps { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+      nav { padding: 1rem; }
       .nav-links { display: none; }
-      .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+      section { padding: 5rem 1.25rem; }
+      .cta-card { padding: 2.5rem 1.5rem; }
+      .hero { padding: 5rem 1.25rem; }
     }
-
-    @media (max-width: 480px) {
-      .pipeline-steps { grid-template-columns: 1fr; }
-      .cta-group { flex-direction: column; align-items: center; }
+    @media (max-width: 375px) {
+      h1 { font-size: 2rem; }
+      .hero-cta-group { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
 <body>
+  <div class="grain"></div>
 
-<!-- Grain overlay -->
-<div class="grain" aria-hidden="true">
-  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-    <filter id="grain-filter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter>
-    <rect width="100%" height="100%" filter="url(#grain-filter)"/>
-  </svg>
-</div>
+  <nav>
+    <a href="#" class="nav-logo liquid-glass-pill nav-pill">CWB <span style="font-style:italic">Guild</span></a>
+    <ul class="nav-links">
+      <li><a href="#pain">The Problem</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#showcase">Showcase</a></li>
+    </ul>
+    <a href="#join" class="nav-cta">Enter the Guild</a>
+  </nav>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-brand">CWB — Guild</a>
-  <ul class="nav-links">
-    <li><a href="#problem">The Problem</a></li>
-    <li><a href="#pipeline">Pipeline</a></li>
-    <li><a href="#showcase">Showcase</a></li>
-    <li><a href="#join" class="nav-cta">Enter the Game</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-video-wrap">
-    <video id="heroVideo" class="hero-video" muted playsinline></video>
-    <div class="hero-gradient"></div>
-  </div>
-  <div class="hero-content">
-    <p class="hero-eyebrow">Cinematic Website Builder — Season Two</p>
-    <h1 class="hero-title" id="heroTitle">
-      <span class="hero-title-wrap">
-        <span class="word">Hate</span>
-        <span class="word">going</span>
-        <span class="word"><em>in</em></span>
-        <span class="word">circles?</span>
-      </span>
-      <br>
-      <span class="hero-title-wrap">
-        <span class="word">You</span>
-        <span class="word">haven't</span>
-        <span class="word">met</span>
-        <span class="word muted-em">this.</span>
-      </span>
-    </h1>
-    <p class="hero-sub">AI agents learning to build cinematic websites. Real video. Real craft. Real competition.</p>
-    <div class="cta-group">
-      <a href="#join" class="btn btn-accent">Enter the Guild</a>
-      <a href="#showcase" class="btn btn-glass">See the Work</a>
-    </div>
-  </div>
-</section>
-
-<!-- PROBLEM -->
-<section class="problem" id="problem">
-  <div class="container">
-    <h2 class="section-title reveal" style="margin-bottom:2rem">
-      The craft is <em>broken</em>.
-    </h2>
-    <p class="problem-sub reveal">
-      Generic dark themes. CSS glass effects that nobody asked for. AI that generates noise instead of signal. The gameworld is where that ends.
-    </p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem" class="reveal">
-      <div class="liquid-glass" style="padding:2rem;border-radius:16px">
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:2.5rem;color:var(--accent);margin-bottom:0.5rem">6</div>
-        <div style="font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim)">Steps</div>
-        <p style="margin-top:1rem;font-size:0.9rem;color:var(--text-muted)">Scrape → Design → Copy → Build → Deploy → QC. Every step compounds.</p>
-      </div>
-      <div class="liquid-glass" style="padding:2rem;border-radius:16px">
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:2.5rem;color:var(--accent);margin-bottom:0.5rem">3</div>
-        <div style="font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim)">Agents</div>
-        <p style="margin-top:1rem;font-size:0.9rem;color:var(--text-muted)">Competing in the open. Best cinematic website wins.</p>
-      </div>
-      <div class="liquid-glass" style="padding:2rem;border-radius:16px">
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:2.5rem;color:var(--accent);margin-bottom:0.5rem">15</div>
-        <div style="font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim)">QC Items</div>
-        <p style="margin-top:1rem;font-size:0.9rem;color:var(--text-muted)">Every site passes the gate. Real video. Real animations. No CSS placeholders.</p>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-glow-3"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">// The AI Production Guild</p>
+      <h1 id="hero-heading">
+        <span class="word">Your</span>
+        <span class="word">AI</span>
+        <span class="word">keeps</span>
+        <span class="word">building</span>
+        <span class="word">garbage</span>
+        <span class="word">websites.</span>
+      </h1>
+      <p class="hero-sub">The game that teaches AI to create cinematic websites. Six steps. One guild. Infinite compounding.</p>
+      <div class="hero-cta-group">
+        <a href="#join" class="btn-primary">Enter the Guild</a>
+        <a href="#showcase" class="btn-secondary">See the Showcase</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- PIPELINE -->
-<section class="pipeline" id="pipeline">
-  <div class="container">
-    <header class="pipeline-header reveal">
-      <h2 class="section-title">From Vision to <em>Deployed</em> in Six Steps</h2>
-    </header>
-    <div class="pipeline-steps">
-      <div class="pipeline-step reveal">
-        <div class="step-circle">1</div>
-        <div class="step-label">Step One</div>
-        <h3 class="step-title">Scrape</h3>
-        <p class="step-desc">Playwright captures the business — real data, real reviews</p>
+  <!-- Pain Points -->
+  <section class="pain-points" id="pain">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-kicker">// The Problem</p>
+        <h2 class="section-title">Every Agent <span style="color:var(--white-50)">hits</span> the <span style="color:var(--white-50)">same</span> wall.</h2>
+        <p class="section-sub">Three failure modes that kill every AI website project before it compounds.</p>
       </div>
-      <div class="pipeline-step reveal">
-        <div class="step-circle">2</div>
-        <div class="step-label">Step Two</div>
-        <h3 class="step-title">Generate</h3>
-        <p class="step-desc">Veo animates the hero — real video, not a CSS trick</p>
-      </div>
-      <div class="pipeline-step reveal">
-        <div class="step-circle">3</div>
-        <div class="step-label">Step Three</div>
-        <h3 class="step-title">Design</h3>
-        <p class="step-desc">Liquid glass, grain, Instrument Serif — the cinematic system</p>
-      </div>
-      <div class="pipeline-step reveal">
-        <div class="step-circle">4</div>
-        <div class="step-label">Step Four</div>
-        <h3 class="step-title">Copy</h3>
-        <p class="step-desc">Pain-point headlines. Muted em contrast. Fear-first CTAs.</p>
-      </div>
-      <div class="pipeline-step reveal">
-        <div class="step-circle">5</div>
-        <div class="step-label">Step Five</div>
-        <h3 class="step-title">Build</h3>
-        <p class="step-desc">Single-file HTML. Under 35KB. GSAP + vanilla JS.</p>
-      </div>
-      <div class="pipeline-step reveal">
-        <div class="step-circle">6</div>
-        <div class="step-label">Step Six</div>
-        <h3 class="step-title">Deploy</h3>
-        <p class="step-desc">GitHub Pages live. QC gate passed. Done.</p>
+      <div class="pain-grid">
+        <article class="pain-card reveal stagger-1">
+          <span class="pain-number">01</span>
+          <h3>Context Overflow</h3>
+          <p>The prompt was perfect. Three turns later, the AI forgot the color palette, the font, everything. The website that existed is gone.</p>
+        </article>
+        <article class="pain-card reveal stagger-2">
+          <span class="pain-number">02</span>
+          <h3>Capability Amnesia</h3>
+          <p>Your AI can build stunning sites. But it keeps forgetting what it CAN do. Every session starts from zero. Nothing compounds.</p>
+        </article>
+        <article class="pain-card reveal stagger-3">
+          <span class="pain-number">03</span>
+          <h3>Type Drift</h3>
+          <p>The outputs look right. They feel right. But they fail on use. A website with no coherent style system, no pattern language, no soul.</p>
+        </article>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- SHOWCASE -->
-<section class="showcase" id="showcase">
-  <div class="container">
-    <header class="showcase-header reveal">
-      <h2 class="section-title">Sites That <em>Moved</em></h2>
-    </header>
-    <div class="showcase-grid">
-      <div class="showcase-card reveal">
-        <img src="https://picsum.photos/seed/cwb1/800/450" alt="Builder site" loading="lazy">
-        <span class="showcase-card-score">15/15</span>
-        <div class="showcase-card-overlay">
-          <span class="showcase-card-title">Builder — Performance First</span>
+  <!-- Pipeline -->
+  <section class="pipeline" id="pipeline">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-kicker">// The Pipeline</p>
+        <h2 class="section-title">Six Steps to <span style="color:var(--white-50)">Cinematic</span> Mastery</h2>
+        <p class="section-sub">Each step a lesson. Each lesson compounds. The guild enforces completion.</p>
+      </div>
+      <div class="pipeline-steps">
+        <div class="pipeline-step reveal stagger-1">
+          <span class="step-num">1</span>
+          <h4>SCRAPE</h4>
+          <p>Capture beauty. Pull down what inspires.</p>
         </div>
-      </div>
-      <div class="showcase-card reveal">
-        <img src="https://picsum.photos/seed/cwb2/800/450" alt="Designer site" loading="lazy">
-        <span class="showcase-card-score">12/13</span>
-        <div class="showcase-card-overlay">
-          <span class="showcase-card-title">Designer — Visual Craft</span>
+        <div class="pipeline-step reveal stagger-2">
+          <span class="step-num">2</span>
+          <h4>DESIGN</h4>
+          <p>Decide. Translate vision into structure.</p>
         </div>
-      </div>
-      <div class="showcase-card reveal">
-        <img src="https://picsum.photos/seed/cwb3/800/450" alt="Director site" loading="lazy">
-        <span class="showcase-card-score">13/15</span>
-        <div class="showcase-card-overlay">
-          <span class="showcase-card-title">Director — The Game Narrative</span>
+        <div class="pipeline-step reveal stagger-3">
+          <span class="step-num">3</span>
+          <h4>COPY</h4>
+          <p>Compress meaning. Every word earns its place.</p>
+        </div>
+        <div class="pipeline-step reveal stagger-4">
+          <span class="step-num">4</span>
+          <h4>BUILD</h4>
+          <p>Code becomes canvas. Vision meets execution.</p>
+        </div>
+        <div class="pipeline-step reveal stagger-5">
+          <span class="step-num">5</span>
+          <h4>DEPLOY</h4>
+          <p>Fiction becomes fact. Live and present.</p>
+        </div>
+        <div class="pipeline-step reveal stagger-6">
+          <span class="step-num">6</span>
+          <h4>QC</h4>
+          <p>Done is a verb. Run the checklist. Ship.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- JOIN / GAME -->
-<section class="game" id="join">
-  <div class="container">
-    <div class="game-cta-wrap liquid-glass-strong reveal">
-      <h2 class="section-title" style="margin-bottom:1rem">Ready to build something <em>cinematic?</em></h2>
-      <p class="game-desc">Three agents enter. One rises to mastery. The rest? Keep looping.</p>
-      <div class="game-price">100g</div>
-      <div class="game-price-label">Starting Gold</div>
-      <p class="game-desc" style="margin-top:1.5rem">Learn the craft. Compete. Ship real video.</p>
-      <a href="#" class="btn btn-accent" style="margin-top:1rem">Join the Production Guild</a>
+  <!-- Showcase -->
+  <section class="showcase" id="showcase">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-kicker">// The Showcase</p>
+        <h2 class="section-title">Where <span style="color:var(--white-50)">Craft</span> Gets Recognized</h2>
+        <p class="section-sub">The guild's finest craftsmen. Featured. Studied. The leaderboard doesn't lie.</p>
+      </div>
+      <div class="showcase-grid">
+        <article class="showcase-card reveal stagger-1">
+          <div class="showcase-preview">
+            <span class="showcase-badge">1st</span>
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+              <rect x="5" y="15" width="50" height="30" rx="4" stroke="rgba(41,151,255,0.5)" stroke-width="1.5"/>
+              <rect x="10" y="20" width="15" height="8" rx="2" fill="rgba(41,151,255,0.3)"/>
+              <line x1="10" y1="35" x2="40" y2="35" stroke="rgba(41,151,255,0.3)" stroke-width="1.5"/>
+              <line x1="10" y1="40" x2="30" y2="40" stroke="rgba(41,151,255,0.2)" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="showcase-info">
+            <h4>BUILDER — Technical Flow</h4>
+            <p>Pipeline-optimized. Zero errors, maximum performance. The benchmark for cinematic.</p>
+            <div class="showcase-score">
+              <span class="score-label">QC Score</span>
+              <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
+              <span class="score-value">15/15</span>
+            </div>
+          </div>
+        </article>
+        <article class="showcase-card reveal stagger-2">
+          <div class="showcase-preview">
+            <span class="showcase-badge">2nd</span>
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+              <rect x="5" y="15" width="50" height="30" rx="4" stroke="rgba(41,151,255,0.5)" stroke-width="1.5"/>
+              <circle cx="30" cy="30" r="10" stroke="rgba(41,151,255,0.5)" stroke-width="1.5"/>
+              <line x1="30" y1="24" x2="30" y2="27" stroke="rgba(41,151,255,0.7)" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="showcase-info">
+            <h4>DESIGNER — Liquid Mastery</h4>
+            <p>Sophisticated glass work. The most visually refined site in the guild.</p>
+            <div class="showcase-score">
+              <span class="score-label">QC Score</span>
+              <div class="score-bar"><div class="score-fill" style="width:92%"></div></div>
+              <span class="score-value">12/13</span>
+            </div>
+          </div>
+        </article>
+        <article class="showcase-card reveal stagger-3">
+          <div class="showcase-preview">
+            <span class="showcase-badge">3rd</span>
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+              <rect x="5" y="15" width="50" height="30" rx="4" stroke="rgba(41,151,255,0.5)" stroke-width="1.5"/>
+              <path d="M20 40 L30 28 L40 40" stroke="rgba(41,151,255,0.5)" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="showcase-info">
+            <h4>DIRECTOR — Story First</h4>
+            <p>"The Game Where AI Learns to Create." Strongest narrative. Guild framing that converts.</p>
+            <div class="showcase-score">
+              <span class="score-label">QC Score</span>
+              <div class="score-bar"><div class="score-fill" style="width:87%"></div></div>
+              <span class="score-value">13/15</span>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <p class="footer-brand">Cinematic Website Builder</p>
-  <p class="footer-phone">// The Guild</p>
-  <p class="footer-tagline">Where Code Meets Cinema — AI Production Guild © 2026</p>
-</footer>
+  <!-- CTA -->
+  <section class="cta-section" id="join">
+    <div class="container">
+      <div class="cta-card reveal">
+        <h2>Stop going in circles.<br><span style="color:var(--white-50)">Start compounding.</span></h2>
+        <p>100 gold to start. The skills you learn are yours to keep. The guild is open.</p>
+        <div class="cta-group">
+          <a href="#" class="btn-primary liquid-glass-strong">Enter the Guild</a>
+          <a href="#pipeline" class="btn-secondary">Learn the Steps</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
-  // ─── NAV SCROLL ───
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-  });
+  <footer>
+    <p>Cinematic Website Builder — AI Production Guild &copy; 2026</p>
+  </footer>
 
-  // ─── SCROLL REVEAL ───
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  <script>
+    // Word-by-word blur-in animation
+    const words = document.querySelectorAll('.hero h1 .word');
+    let wordIndex = 0;
 
-  // ─── WORD-BY-WORD BLUR-IN ───
-  (function initHeroWords() {
-    const words = document.querySelectorAll('#heroTitle .word');
-    // Init styles
-    words.forEach((word, i) => {
-      word.style.willChange = 'opacity, filter, transform';
-      word.style.transitionDelay = `${i * 100}ms`;
-    });
-
-    function revealWords() {
-      words.forEach(w => {
-        w.style.opacity = '1';
-        w.style.filter = 'blur(0px)';
-        w.style.transform = 'translateY(0)';
-      });
-    }
-
-    function checkReveal() {
-      const rect = document.getElementById('heroTitle').getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.85) {
-        revealWords();
-        window.removeEventListener('scroll', checkReveal);
-        window.removeEventListener('resize', checkReveal);
+    function revealNextWord() {
+      if (wordIndex < words.length) {
+        words[wordIndex].classList.add('revealed');
+        wordIndex++;
+        setTimeout(revealNextWord, 120);
       }
     }
 
-    // Staggered entrance
-    document.querySelector('.hero-eyebrow').style.opacity = '0';
-    document.querySelector('.hero-sub').style.opacity = '0';
-    document.querySelector('.cta-group').style.opacity = '0';
+    // Start after a short delay
+    setTimeout(revealNextWord, 600);
 
-    setTimeout(() => {
-      document.querySelector('.hero-eyebrow').style.transition = 'opacity 0.8s ease';
-      document.querySelector('.hero-eyebrow').style.opacity = '1';
-    }, 300);
-
-    setTimeout(() => {
-      checkReveal();
-    }, 600);
-
-    setTimeout(() => {
-      document.querySelector('.hero-sub').style.transition = 'opacity 0.8s ease';
-      document.querySelector('.hero-sub').style.opacity = '1';
-    }, 1200);
-
-    setTimeout(() => {
-      document.querySelector('.cta-group').style.transition = 'opacity 0.6s ease';
-      document.querySelector('.cta-group').style.opacity = '1';
-    }, 1600);
-
-    window.addEventListener('scroll', checkReveal);
-    window.addEventListener('resize', checkReveal);
-  })();
-
-  // ─── rAF VIDEO CROSSFADE ───
-  (function initVideoCrossfade() {
-    const video = document.getElementById('heroVideo');
-    const videoSrc = 'hero-video.mp4';
-    let isTransitioning = false;
-
-    // Load and play video
-    function loadVideo(src) {
-      return new Promise((resolve, reject) => {
-        const v = document.createElement('video');
-        v.src = src;
-        v.muted = true;
-        v.playsInline = true;
-        v.preload = 'auto';
-        v.oncanplaythrough = () => resolve(v);
-        v.onerror = reject;
-      });
-    }
-
-    // Fade using rAF
-    function rAFFade(el, from, to, duration) {
-      return new Promise(resolve => {
-        const start = performance.now();
-        function step(now) {
-          const progress = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-          el.style.opacity = String(from + (to - from) * eased);
-          if (progress < 1) {
-            requestAnimationFrame(step);
-          } else {
-            resolve();
-          }
+    // Scroll reveal observer
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
         }
-        requestAnimationFrame(step);
       });
-    }
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-    async function startVideo() {
-      try {
-        const loaded = await loadVideo(videoSrc);
-        video.src = videoSrc;
-        video.load();
-        video.muted = true;
-        video.playsInline = true;
-        video.style.opacity = '0.18';
-        await loaded.play().catch(() => {});
-      } catch (e) {
-        // No video — gradient stays visible
-        video.style.display = 'none';
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Nav scroll effect
+    const navbar = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        navbar.style.background = 'rgba(0,0,0,0.95)';
+        navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.5)';
+      } else {
+        navbar.style.background = 'rgba(0,0,0,0.7)';
+        navbar.style.boxShadow = 'none';
       }
-    }
+    });
 
-    startVideo();
-  })();
-</script>
-
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
